@@ -1,6 +1,7 @@
 import azure.functions as func
 import json
 from pydantic import ValidationError
+from sqlalchemy.exc import SQLAlchemyError
 
 from db import SessionLocal
 from employee_service import (
@@ -69,7 +70,14 @@ def create_employee_endpoint(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
             status_code=400,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -110,7 +118,14 @@ def get_employee_endpoint(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -146,7 +161,14 @@ def list_employees_endpoint(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -207,7 +229,14 @@ def update_employee_endpoint(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -244,7 +273,14 @@ def delete_employee_endpoint(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(
             status_code=204,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -263,7 +299,14 @@ def total_bonus_endpoint(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -285,7 +328,14 @@ def employees_without_bonus_endpoint(req: func.HttpRequest) -> func.HttpResponse
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -314,7 +364,14 @@ def bonus_percentages_endpoint(req: func.HttpRequest) -> func.HttpResponse:
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -351,7 +408,14 @@ def departments_bonus_above_average_endpoint(
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -375,7 +439,14 @@ def employees_ranked_by_bonus_endpoint(
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
 
@@ -421,6 +492,13 @@ def salary_and_compensation_leaders_endpoint(
             mimetype="application/json",
             status_code=200,
         )
-
+    except SQLAlchemyError:
+        return func.HttpResponse(
+            json.dumps({
+                "error": "Database operation failed"
+            }),
+            mimetype="application/json",
+            status_code=500,
+        )
     finally:
         db.close()
