@@ -42,7 +42,7 @@ PostgreSQL is run locally using Docker:
 ```powershell
 docker run --name employee-postgres `
   -e POSTGRES_USER=employee_admin `
-  -e POSTGRES_PASSWORD=employee_pass123 `
+  -e POSTGRES_PASSWORD=<your-password> `
   -e POSTGRES_DB=employee_compensation `
   -p 5433:5432 `
   -d postgres:16
@@ -75,7 +75,7 @@ Set `DATABASE_URL` in `local.settings.json`:
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME": "python",
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "DATABASE_URL": "postgresql+psycopg2://employee_admin:employee_pass123@127.0.0.1:5433/employee_compensation"
+    "DATABASE_URL": "postgresql+psycopg2://employee_admin:<your-password>@127.0.0.1:5433/employee_compensation"
   }
 }
 ```
