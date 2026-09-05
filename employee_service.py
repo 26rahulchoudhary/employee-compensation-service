@@ -1,14 +1,14 @@
 from sqlalchemy.orm import Session
 
-from db import SessionLocal
+# from db import SessionLocal
 
 from database.models import Department, Employee
 from schemas import EmployeeCreate
 from sqlalchemy import func, select
 
 
-def get_db() -> Session:
-    return SessionLocal()
+# def get_db() -> Session:
+#     return SessionLocal()
 
 
 def create_employee(db: Session, employee_data: EmployeeCreate) -> Employee:
@@ -21,11 +21,17 @@ def create_employee(db: Session, employee_data: EmployeeCreate) -> Employee:
         hire_date=employee_data.hire_date,
     )
 
-    db.add(employee)
-    db.commit()
-    db.refresh(employee)
+    try:
+        db.add(employee)
+        db.commit()
+        db.refresh(employee)
 
-    return employee
+        return employee
+
+    except Exception:
+        db.rollback()
+        raise
+
 
 
 def get_employee(db: Session, employee_id: int) -> Employee | None:
@@ -66,10 +72,15 @@ def update_employee(
     employee.bonus = employee_data.bonus
     employee.hire_date = employee_data.hire_date
 
-    db.commit()
-    db.refresh(employee)
+    try:
+        db.commit()
+        db.refresh(employee)
 
-    return employee
+        return employee
+
+    except Exception:
+        db.rollback()
+        raise
 
 def delete_employee(
     db: Session,
@@ -80,10 +91,15 @@ def delete_employee(
     if employee is None:
         return False
 
-    db.delete(employee)
-    db.commit()
+    try:
+        db.delete(employee)
+        db.commit()
 
-    return True
+        return True
+
+    except Exception:
+        db.rollback()
+        raise
 
 def get_total_bonus(db: Session):
     statement = select(
